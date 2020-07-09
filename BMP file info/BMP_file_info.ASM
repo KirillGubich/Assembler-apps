@@ -5,7 +5,7 @@ Start:
         mov     dx, CurDir
         int     21h
 
-        mov     ah, $1A              ; Задание расположения DTA
+        mov     ah, $1A              ; Р—Р°РґР°РЅРёРµ СЂР°СЃРїРѕР»РѕР¶РµРЅРёСЏ DTA
         mov     dx, dta
         int     21h
 
@@ -15,7 +15,7 @@ Input:
         push    searchPath
         call    ShowDir
 
-        mov     ah, $09              ;Новая строка
+        mov     ah, $09              ;РќРѕРІР°СЏ СЃС‚СЂРѕРєР°
         mov     dx, crlf
         int     21h
 
@@ -27,7 +27,7 @@ Input:
         int     21h
 
         xor     ax, ax
-        mov     bx, NewDir           ; добавление 0
+        mov     bx, NewDir           ; РґРѕР±Р°РІР»РµРЅРёРµ 0
         mov     al, [bx+1]
         add     bx, ax
         xor     ah, ah
@@ -37,7 +37,7 @@ Input:
         jne     @F
 
 
-        mov     ah, $09              ;Новая строка
+        mov     ah, $09              ;РќРѕРІР°СЏ СЃС‚СЂРѕРєР°
         mov     dx, mes
         int     21h
 
@@ -48,7 +48,7 @@ Input:
         mov     bx, NewDir+1
         xor     ax, ax
 
-        mov     al, [bx]              ; Выход из программы при пустом вводе
+        mov     al, [bx]              ; Р’С‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹ РїСЂРё РїСѓСЃС‚РѕРј РІРІРѕРґРµ
 
         cmp     al, 0
         je      @F
@@ -62,16 +62,16 @@ Input:
         mov     dx, NewDir+2
         int     21h
 
-        mov     ah, $09              ;Новая строка
+        mov     ah, $09              ;РќРѕРІР°СЏ СЃС‚СЂРѕРєР°
         mov     dx, crlf
         int     21h
-        mov     ah, $09              ;Новая строка
+        mov     ah, $09              ;РќРѕРІР°СЏ СЃС‚СЂРѕРєР°
         mov     dx, crlf
         int     21h
 
         jmp     Input
 @@:
-        mov     ah, $09              ;вывод сообщения
+        mov     ah, $09              ;РІС‹РІРѕРґ СЃРѕРѕР±С‰РµРЅРёСЏ
         mov     dx, message
         int     21h
 
@@ -89,18 +89,18 @@ ShowDir:                            ; FindFirstFile
         push    bp
         mov     bp, sp
         mov     ah, $4E
-        mov     cx, 00010000b         ; Атрибуты поиска файлов
+        mov     cx, 00010000b         ; РђС‚СЂРёР±СѓС‚С‹ РїРѕРёСЃРєР° С„Р°Р№Р»РѕРІ
         mov     dx, [bp+4]
         int     21h
         jc quit
 
 print_filename:
-                          ; имя файла находится по смещению 1Eh в DTA и завершается нулем
+                          ; РёРјСЏ С„Р°Р№Р»Р° РЅР°С…РѕРґРёС‚СЃСЏ РїРѕ СЃРјРµС‰РµРЅРёСЋ 1Eh РІ DTA Рё Р·Р°РІРµСЂС€Р°РµС‚СЃСЏ РЅСѓР»РµРј
         mov     ah, $09
         mov     dx, dta + 1eh
         int     21h
         
-                                     ; перевод на новую строку
+                                     ; РїРµСЂРµРІРѕРґ РЅР° РЅРѕРІСѓСЋ СЃС‚СЂРѕРєСѓ
         mov     ah, $09
         mov     dx, crlf
         int     21h
@@ -109,15 +109,15 @@ print_filename:
         mov     ah, $4F
         mov     dx, dta
         int     21h
-        jnc print_filename    ; если ошибки нет - продолжаем вывод списка файлов,
-                              ; иначе конец программы
+        jnc print_filename    ; РµСЃР»Рё РѕС€РёР±РєРё РЅРµС‚ - РїСЂРѕРґРѕР»Р¶Р°РµРј РІС‹РІРѕРґ СЃРїРёСЃРєР° С„Р°Р№Р»РѕРІ,
+                              ; РёРЅР°С‡Рµ РєРѕРЅРµС† РїСЂРѕРіСЂР°РјРјС‹
 quit:
         pop     bp
         ret     2
 
 FileInfo:
 
-        mov    ax, 3d00h             ; Открытие файла
+        mov    ax, 3d00h             ; РћС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р°
         mov    dx, NewDir+2
         int    21h
 
@@ -132,7 +132,7 @@ FileInfo:
 
         push   ax
 
-        mov    bx, ax                ; Чтение файла
+        mov    bx, ax                ; Р§С‚РµРЅРёРµ С„Р°Р№Р»Р°
         mov    ah, 3fh
         mov    cx, 40
         mov    dx, Buffer
@@ -147,7 +147,7 @@ FileInfo:
         mov    dx, Size
         int    21h
 
-        mov    bx, Buffer            ; Чтение размера файла
+        mov    bx, Buffer            ; Р§С‚РµРЅРёРµ СЂР°Р·РјРµСЂР° С„Р°Р№Р»Р°
         mov    edx, 0
         mov    eax, 0
         mov    dh, [bx+3]
@@ -157,7 +157,7 @@ FileInfo:
         add    edx, eax
 
         push   edx
-        call   PrintDec            ; Вывод на экран размера файла
+        call   PrintDec            ; Р’С‹РІРѕРґ РЅР° СЌРєСЂР°РЅ СЂР°Р·РјРµСЂР° С„Р°Р№Р»Р°
 
         mov    ah, 09
         mov    dx, Output
@@ -168,7 +168,7 @@ FileInfo:
         int    21h
 
         mov    bx, Buffer
-        mov    edx, 0               ; Вывод на экран разрешения изображения
+        mov    edx, 0               ; Р’С‹РІРѕРґ РЅР° СЌРєСЂР°РЅ СЂР°Р·СЂРµС€РµРЅРёСЏ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
         mov    eax, 0
         mov    dh, [bx+19]
         mov    dl, [bx+18]
@@ -184,7 +184,7 @@ FileInfo:
         int    21h
 
         mov    bx, Buffer
-        mov    edx, 0               ; Вывод на экран разрешения изображения
+        mov    edx, 0               ; Р’С‹РІРѕРґ РЅР° СЌРєСЂР°РЅ СЂР°Р·СЂРµС€РµРЅРёСЏ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
         mov    eax, 0
         mov    dh, [bx+23]
         mov    dl, [bx+22]
@@ -205,7 +205,7 @@ FileInfo:
         ret
 
 
-PrintDec:                            ;<=== Вывод десятичного числа
+PrintDec:                            ;<=== Р’С‹РІРѕРґ РґРµСЃСЏС‚РёС‡РЅРѕРіРѕ С‡РёСЃР»Р°
         push   bp
         mov    bp, sp
 
@@ -253,7 +253,7 @@ zero:
 
 ;------------------------------------------------------------------------------------
 CurDir db 'C:\', 0
-searchPath  db "*.*",0                 ; Маски поиска
+searchPath  db "*.*",0                 ; РњР°СЃРєРё РїРѕРёСЃРєР°
 searchPathBmp db "*.bmp*",0
 message db 10, 13, 'Exit...','$'
 mes     db 10, 13, 'File info:', 10, 13, '$'
